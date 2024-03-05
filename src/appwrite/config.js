@@ -88,6 +88,7 @@ class Services {
       );
     } catch (error) {
       console.log("Error in get all posts ", error);
+      return false;
     }
   }
 

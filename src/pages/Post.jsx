@@ -6,7 +6,7 @@ import { Button, Container } from "../components";
 import parse from "html-react-parser";
 
 export default function Post() {
-  const [post, setPost] = useState([]);
+  const [post, setPost] = useState(null);
   const { slug } = useParams();
   const navigate = useNavigate();
 
@@ -34,7 +34,7 @@ export default function Post() {
     });
   };
 
-  return Post ? (
+  return post ? (
     <div className="py-8">
       <Container>
         <div className="w-full flex justify-center mb-4 relative border rounded-xl p-2">
@@ -46,7 +46,7 @@ export default function Post() {
 
           {isAuthor && (
             <div className="absolute right-6 top-6">
-              <Link to={`edit-post/${post.$id}`}>
+              <Link to={`/edit-post/${post.$id}`}>
                 <Button bgColor="bg-green-500" className="mr-3">
                   Edit Post
                 </Button>

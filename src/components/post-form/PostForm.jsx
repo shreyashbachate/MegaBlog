@@ -1,11 +1,11 @@
 import React, { useCallback, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useSelector } from "react-redux";
-import { Button, Input, Select, RTE,Modal } from "../index";
+import { Button, Input, Select, RTE, Modal } from "../index";
 import services from "../../appwrite/config";
 import { useNavigate } from "react-router-dom";
 
-function PostForm({ post }) {
+export default function PostForm({ post }) {
   const navigate = useNavigate();
   const userData = useSelector((state) => state.auth.userData);
 
@@ -16,7 +16,7 @@ function PostForm({ post }) {
     useForm({
       defaultValues: {
         title: post?.title || "",
-        slug: post?.slug || "",
+        slug: post?.$id || "",
         content: post?.content || "",
         status: post?.status || "active",
       },
@@ -26,7 +26,9 @@ function PostForm({ post }) {
     setIsSubmitting(true);
     if (data.image && data.image.length > 0) {
       if (post) {
-        const file = data.image[0] ? services.uploadFile(data.image[0]) : null;
+        const file = data.image[0] ? await services.uploadFile(data.image[0]) : null;
+        // const file = await services.uploadFile(data.image[0]);
+
         if (file) {
           services.deleteFile(post.featuredImage);
         }
@@ -34,11 +36,14 @@ function PostForm({ post }) {
           ...data,
           featuredImage: file ? file.$id : undefined,
         });
+
+        console.log(dbPost);
+
         if (dbPost) {
           navigate(`/post/${dbPost.$id}`);
         }
       } else {
-        const file = services.uploadFile(data.image[0]);
+        const file = await services.uploadFile(data.image[0]);
         if (file) {
           const fileId = file.$id;
           data.featuredImage = fileId;
@@ -46,6 +51,9 @@ function PostForm({ post }) {
             ...data,
             userId: userData.$id,
           });
+
+          console.log(dbPost);
+
           if (dbPost) {
             navigate(`post/${dbPost.$id}`);
           }
@@ -78,9 +86,8 @@ function PostForm({ post }) {
       }
     });
 
-    return () => {
-      subscription.unsubscribe();
-    };
+    return () => subscription.unsubscribe();
+
   }, [watch, slugTransform, setValue]);
 
   return (
@@ -121,12 +128,14 @@ function PostForm({ post }) {
         {post && (
           <div className="w-full mb-4">
             <img
-              src={appwriteService.getFilePreview(post.featuredImage)}
+              src={services.getFilePreview(post.featuredImage)}
               alt={post.title}
               className="rounded-lg"
             />
           </div>
         )}
+
+        <label>Status:</label>
         <Select
           options={["active", "inactive"]}
           label="Status"
@@ -145,11 +154,10 @@ function PostForm({ post }) {
       {showModal && (
         <Modal
           message="Form Submitted Successfully"
-          closeModal={() => setShowModal(false)}
+          closeModal={(() => setShowModal(false), setIsSubmitting(false))}
         />
       )}
     </form>
   );
 }
 
-export default PostForm;
