@@ -5,9 +5,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 
 function Header() {
-  const authStatus = useSelector((state) => {
-    state.auth.status;
-  });
+  const authStatus = useSelector((state) => state.auth.status);
 
   const navigate = useNavigate();
 
@@ -16,11 +14,11 @@ function Header() {
     { name: "Login", slug: "/login", active: !authStatus },
     { name: "Signup", slug: "/signup", active: !authStatus },
     { name: "All Posts", slug: "/all-posts", active: authStatus },
-    { name: "Add Posts", slug: "/add-posts", active: authStatus },
+    { name: "Add Posts", slug: "/add-post", active: authStatus },
   ];
 
   return (
-    <header className="py-3 shadow bg-gray-500">
+    <header className="py-3 shadow bg-[#0f131e] text-white">
       <Container>
         <nav className="flex">
           <div className="mr-4">
@@ -34,7 +32,8 @@ function Header() {
               item.active ? (
                 <li key={item.name}>
                   <button
-                    className="inline-block px-6 py-2 duration-200 hover:bg-green-100 rounded-full"
+                    className="inline-block px-6 py-2 duration-200 hover:bg-blue-100 
+                    hover:text-black  rounded-full"
                     onClick={() => navigate(item.slug)}
                   >
                     {item.name}
@@ -43,7 +42,7 @@ function Header() {
               ) : null
             )}
             {authStatus && (
-              <li>
+              <li className="hover:text-black">
                 <LogoutBtn />
               </li>
             )}

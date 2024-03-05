@@ -79,7 +79,7 @@ function Signup() {
                 required: true,
               })}
             />
-            <Button classname="w-full" type="submit">
+            <Button className="w-full" type="submit">
               Signup
             </Button>
           </div>
