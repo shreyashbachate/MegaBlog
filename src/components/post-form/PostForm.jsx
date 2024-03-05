@@ -1,13 +1,16 @@
-import React, { useCallback } from "react";
+import React, { useCallback, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useSelector } from "react-redux";
-import { Button, Input, Select, RTE } from "../index";
+import { Button, Input, Select, RTE,Modal } from "../index";
 import services from "../../appwrite/config";
 import { useNavigate } from "react-router-dom";
 
 function PostForm({ post }) {
   const navigate = useNavigate();
-  const userData = useSelector((state) => state.user.userData);
+  const userData = useSelector((state) => state.auth.userData);
+
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [showModal, setShowModal] = useState(false);
 
   const { register, handleSubmit, watch, setValue, control, getValues } =
     useForm({
@@ -20,32 +23,41 @@ function PostForm({ post }) {
     });
 
   const submit = async (data) => {
-    if (post) {
-      const file = data.image[0] ? services.uploadFile(data.image[0]) : null;
-      if (file) {
-        services.deleteFile(post.featuredImage);
-      }
-      const dbPost = await services.updatePost(post.$id, {
-        ...data,
-        featuredImage: file ? file.$id : undefined,
-      });
-      if (dbPost) {
-        navigate(`/post/${dbPost.$id}`);
-      }
-    } else {
-      const file = services.uploadFile(data.image[0]);
-      if (file) {
-        const fileId = file.$id;
-        data.featuredImage = fileId;
-        const dbPost = await services.createPost({
+    setIsSubmitting(true);
+    if (data.image && data.image.length > 0) {
+      if (post) {
+        const file = data.image[0] ? services.uploadFile(data.image[0]) : null;
+        if (file) {
+          services.deleteFile(post.featuredImage);
+        }
+        const dbPost = await services.updatePost(post.$id, {
           ...data,
-          userId: userData.$id,
+          featuredImage: file ? file.$id : undefined,
         });
         if (dbPost) {
-          navigate(`post/${dbPost.$id}`);
+          navigate(`/post/${dbPost.$id}`);
+        }
+      } else {
+        const file = services.uploadFile(data.image[0]);
+        if (file) {
+          const fileId = file.$id;
+          data.featuredImage = fileId;
+          const dbPost = await services.createPost({
+            ...data,
+            userId: userData.$id,
+          });
+          if (dbPost) {
+            navigate(`post/${dbPost.$id}`);
+          }
         }
       }
+    } else {
+      // Handle case where no image is provided
+      // For example, display an error message or prevent form submission
+      console.log("No image provided");
     }
+    setIsSubmitting(false);
+    setShowModal(true);
   };
 
   const slugTransform = useCallback((value) => {
@@ -53,7 +65,7 @@ function PostForm({ post }) {
       return value
         .trim()
         .toLowerCase()
-        .replace(/^[a-zA-Z\d\s]+/g, "-")
+        .replace(/[^a-zA-Z\d\s]+/g, "-")
         .replace(/\s/g, "-");
     }
     return "";
@@ -129,6 +141,13 @@ function PostForm({ post }) {
           {post ? "Update" : "Submit"}
         </Button>
       </div>
+      {isSubmitting && <p> Submitting...</p>}
+      {showModal && (
+        <Modal
+          message="Form Submitted Successfully"
+          closeModal={() => setShowModal(false)}
+        />
+      )}
     </form>
   );
 }

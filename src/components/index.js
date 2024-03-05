@@ -12,6 +12,8 @@ import Signup from "./Signup";
 import Login from "./Login";
 import PostForm from "./post-form/PostForm";
 import AuthLayout from "./AuthLayout";
+import Modal from "./post-form/Modal";
+
 export {
   Header,
   Footer,
@@ -27,4 +29,5 @@ export {
   Login,
   PostForm,
   AuthLayout,
+  Modal,
 };
