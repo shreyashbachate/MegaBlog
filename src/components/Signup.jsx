@@ -9,7 +9,7 @@ import { set, useForm } from "react-hook-form";
 function Signup() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { register, handlesubmit } = useForm();
+  const { register, handleSubmit } = useForm();
   const [error, setError] = useState("");
 
   const create = async (data) => {
@@ -49,7 +49,7 @@ function Signup() {
         </p>
         {error && <p className="text-red-600 mt-8 text-center">{error}</p>}
 
-        <form onSubmit={handlesubmit(create)} className="mt-8">
+        <form onSubmit={handleSubmit(create)} className="mt-8">
           <div className="space-y-5">
             <Input
               label="Full Name: "
