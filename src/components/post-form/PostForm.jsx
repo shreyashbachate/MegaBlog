@@ -131,7 +131,7 @@ export default function PostForm({ post }) {
           </div>
         )}
 
-        {/* <label>Status:</label> */}
+        <label>Status:</label>
         <Select
           options={["active", "inactive"]}
           label="Status"
