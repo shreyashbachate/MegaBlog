@@ -12,7 +12,7 @@ function App() {
   
 
   useEffect(() => {
-    setLoading(false);
+    // setLoading(false);
     services
       .getCurrentUser()
       .then((userData) => {

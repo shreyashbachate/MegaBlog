@@ -4,7 +4,7 @@ import { login } from "../store/authSlice";
 import { Button, Input, Logo } from "./index";
 import authService from "../appwrite/auth";
 import { useDispatch } from "react-redux";
-import { set, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 
 function Signup() {
   const navigate = useNavigate();
@@ -55,7 +55,7 @@ function Signup() {
               label="Full Name: "
               placeholder="Enter your full name"
               type="text"
-              {...register("fullname", { required: true })}
+              {...register("name", { required: true })}
             />
 
             <Input
@@ -65,7 +65,7 @@ function Signup() {
               {...register("email", {
                 required: true,
                 validate: {
-                  matchPattern: (value) =>
+                  matchPatern: (value) =>
                     /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(value) ||
                     "Email address must be a valid address",
                 },

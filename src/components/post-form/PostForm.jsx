@@ -23,7 +23,7 @@ export default function PostForm({ post }) {
     });
 
   const submit = async (data) => {
-    setIsSubmitting(true);
+    // setIsSubmitting(true);
     // if (data.image && data.image.length > 0) {
     if (post) {
       const file = data.image[0]
@@ -61,25 +61,25 @@ export default function PostForm({ post }) {
     //   // For example, display an error message or prevent form submission
     //   console.log("No image provided");
     // }
-    setIsSubmitting(false);
-    setShowModal(true);
+    // setIsSubmitting(false);
+    // setShowModal(true);
   };
 
   const slugTransform = useCallback((value) => {
-    if (value && typeof value === "string") {
+    if (value && typeof value === "string")
       return value
         .trim()
         .toLowerCase()
         .replace(/[^a-zA-Z\d\s]+/g, "-")
         .replace(/\s/g, "-");
-    }
+
     return "";
   }, []);
 
   React.useEffect(() => {
     const subscription = watch((value, { name }) => {
       if (name === "title") {
-        setValue("slug", slugTransform(value.title, { shouldValidate: true }));
+        setValue("slug", slugTransform(value.title), { shouldValidate: true });
       }
     });
 
@@ -146,13 +146,13 @@ export default function PostForm({ post }) {
           {post ? "Update" : "Submit"}
         </Button>
       </div>
-      {isSubmitting && <p> Submitting...</p>}
+      {/* {isSubmitting && <p> Submitting...</p>}
       {showModal && (
         <Modal
           message="Form Submitted Successfully"
           closeModal={(() => setShowModal(false), setIsSubmitting(false))}
         />
-      )}
+      )} */}
     </form>
   );
 }
