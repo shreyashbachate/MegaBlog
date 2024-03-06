@@ -24,10 +24,11 @@ export default function PostForm({ post }) {
 
   const submit = async (data) => {
     setIsSubmitting(true);
-    if (data.image && data.image.length > 0) {
+    // if (data.image && data.image.length > 0) {
       if (post) {
-        const file = data.image[0] ? await services.uploadFile(data.image[0]) : null;
-        // const file = await services.uploadFile(data.image[0]);
+        const file = data.image[0]
+          ? await services.uploadFile(data.image[0])
+          : null;
 
         if (file) {
           services.deleteFile(post.featuredImage);
@@ -37,11 +38,11 @@ export default function PostForm({ post }) {
           featuredImage: file ? file.$id : undefined,
         });
 
-        console.log(dbPost);
 
         if (dbPost) {
           navigate(`/post/${dbPost.$id}`);
         }
+        
       } else {
         const file = await services.uploadFile(data.image[0]);
         if (file) {
@@ -52,18 +53,16 @@ export default function PostForm({ post }) {
             userId: userData.$id,
           });
 
-          console.log(dbPost);
-
           if (dbPost) {
             navigate(`post/${dbPost.$id}`);
           }
         }
       }
-    } else {
-      // Handle case where no image is provided
-      // For example, display an error message or prevent form submission
-      console.log("No image provided");
-    }
+    // } else {
+    //   // Handle case where no image is provided
+    //   // For example, display an error message or prevent form submission
+    //   console.log("No image provided");
+    // }
     setIsSubmitting(false);
     setShowModal(true);
   };
@@ -87,7 +86,6 @@ export default function PostForm({ post }) {
     });
 
     return () => subscription.unsubscribe();
-
   }, [watch, slugTransform, setValue]);
 
   return (
@@ -160,4 +158,3 @@ export default function PostForm({ post }) {
     </form>
   );
 }
-

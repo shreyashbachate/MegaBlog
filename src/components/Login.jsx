@@ -3,7 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { Button, Input, Logo } from "./index";
 import { login as authLogin } from "../store/authSlice";
-import authService from "../appwrite/auth";
+import services from "../appwrite/auth";
 import { useForm } from "react-hook-form";
 
 function Login() {
@@ -15,14 +15,14 @@ function Login() {
   const login = async (data) => {
     setError("");
     try {
-      const session = await authService.login(data);
+      const session = await services.login(data);
       if (session) {
-        const userData = await authService.getCurrentUser();
+        const userData = await services.getCurrentUser();
         if (userData) dispatch(authLogin(userData));
         navigate("/");
       }
     } catch (error) {
-      setError(error);
+      setError(error.message);
     }
   };
 
@@ -50,7 +50,7 @@ function Login() {
         </p>
         {error && <p className="text-red-600 mt-8 text-center">{error}</p>}
         <form onSubmit={handleSubmit(login)} className="mt-8">
-          <div className="spacy-y-5">
+          <div className="space-y-5">
             <Input
               label="Email: "
               placeholder="Enter your email here "
@@ -72,6 +72,7 @@ function Login() {
                 required: true,
               })}
             />
+
             <Button className="w-full" type="submit">
               Signin
             </Button>
