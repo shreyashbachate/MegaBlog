@@ -25,39 +25,37 @@ export default function PostForm({ post }) {
   const submit = async (data) => {
     setIsSubmitting(true);
     // if (data.image && data.image.length > 0) {
-      if (post) {
-        const file = data.image[0]
-          ? await services.uploadFile(data.image[0])
-          : null;
+    if (post) {
+      const file = data.image[0]
+        ? await services.uploadFile(data.image[0])
+        : null;
 
-        if (file) {
-          services.deleteFile(post.featuredImage);
-        }
-        const dbPost = await services.updatePost(post.$id, {
+      if (file) {
+        services.deleteFile(post.featuredImage);
+      }
+      const dbPost = await services.updatePost(post.$id, {
+        ...data,
+        featuredImage: file ? file.$id : undefined,
+      });
+
+      if (dbPost) {
+        navigate(`/post/${dbPost.$id}`);
+      }
+    } else {
+      const file = await services.uploadFile(data.image[0]);
+      if (file) {
+        const fileId = file.$id;
+        data.featuredImage = fileId;
+        const dbPost = await services.createPost({
           ...data,
-          featuredImage: file ? file.$id : undefined,
+          userId: userData.$id,
         });
-
 
         if (dbPost) {
           navigate(`/post/${dbPost.$id}`);
         }
-        
-      } else {
-        const file = await services.uploadFile(data.image[0]);
-        if (file) {
-          const fileId = file.$id;
-          data.featuredImage = fileId;
-          const dbPost = await services.createPost({
-            ...data,
-            userId: userData.$id,
-          });
-
-          if (dbPost) {
-            navigate(`post/${dbPost.$id}`);
-          }
-        }
       }
+    }
     // } else {
     //   // Handle case where no image is provided
     //   // For example, display an error message or prevent form submission

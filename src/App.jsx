@@ -9,8 +9,10 @@ import { Outlet } from "react-router-dom";
 function App() {
   const [loading, setLoading] = useState(true);
   const dispatch = useDispatch();
+  
 
   useEffect(() => {
+    setLoading(false);
     services
       .getCurrentUser()
       .then((userData) => {
