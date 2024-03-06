@@ -12,7 +12,6 @@ export default function Post() {
 
   const userData = useSelector((state) => state.auth.userData);
 
-
   const isAuthor = post && userData ? post.userId === userData.$id : false;
 
   useEffect(() => {
@@ -24,7 +23,7 @@ export default function Post() {
     } else {
       navigate("/");
     }
-  }, [slug, navigate]);
+  }, [slug, navigate, isAuthor]);
 
   const deletePost = () => {
     services.deletePost(post.$id).then((status) => {
