@@ -19,6 +19,6 @@ export default function Protected({ children, authentication = true }) {
   return loader ? (
     <h1 className="text-green-500 text-center font-bold"> Loading </h1>
   ) : (
-    <>{children}</>
+    <h1>{children}</h1>
   );
 }

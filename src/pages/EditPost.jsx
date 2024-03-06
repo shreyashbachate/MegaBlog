@@ -21,7 +21,7 @@ function EditPost() {
   }, [slug, navigate]);
 
   return post ? (
-    <div className="py-8">
+    <div className="py-8 text-white">
       <Container>
         <PostForm post={post} />
       </Container>

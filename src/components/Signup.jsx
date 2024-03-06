@@ -26,19 +26,19 @@ function Signup() {
     }
   };
   return (
-    <div className="flex items-center justify-center">
+    <div className="flex items-center justify-center m-2 p-2">
       <div
-        className={`mx-auto w-full max-w-lg bg-gray-100 rounded-xl p-10 border border-black/10`}
+        className={`mx-auto w-full max-w-lg bg-[#2a3347] rounded-xl p-10 border border-black/10`}
       >
-        <div className="mb-2 flex justify-center">
-          <span className="inline-block w-full max-w-[100px]">
+        <div className="mb-2 flex justify-center text-white">
+          <span className="inline-block w-full max-w-[100px] ml-12">
             <Logo width="100%" />
           </span>
         </div>
-        <h2 className="text-center text-2xl font-bold leading-tight">
+        <h2 className="text-center text-2xl font-bold leading-tight  text-white">
           Sign up to create account
         </h2>
-        <p className="mt-2 text-center text-base text-black/60">
+        <p className="mt-2 text-center text-base  text-white text-black/60">
           Already have an account?&nbsp;
           <Link
             to="/login"
@@ -47,9 +47,11 @@ function Signup() {
             Sign In
           </Link>
         </p>
+        {/* we are going to display error here */}
+
         {error && <p className="text-red-600 mt-8 text-center">{error}</p>}
 
-        <form onSubmit={handleSubmit(create)} className="mt-8">
+        <form onSubmit={handleSubmit(create)} className="space-y-3 mt-4 text-left text-white">
           <div className="space-y-5">
             <Input
               label="Full Name: "
@@ -79,7 +81,7 @@ function Signup() {
                 required: true,
               })}
             />
-            <Button className="w-full" type="submit">
+            <Button className="w-full text-black bg-green-500 mt-4 font-semibold hover:text-black" type="submit">
               Signup
             </Button>
           </div>
