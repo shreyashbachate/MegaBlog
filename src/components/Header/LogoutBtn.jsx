@@ -13,10 +13,11 @@ function LogoutBtn() {
       .logout()
       .then(() => {
         dispatch(logout());
+        navigate("/login");
       })
       .catch((err) => console.log(err));
 
-    navigate("/login");
+    
   };
 
   return (
